@@ -52,3 +52,15 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
      /opt/conda/bin/conda install -y python=$PYTHON_VERSION numpy pyyaml scipy ipython mkl mkl-include ninja cython typing && \
      /opt/conda/bin/conda clean -ya
 ENV PATH /opt/conda/bin:$PATH
+
+# Install cloud9
+RUN wget -O  ~/node-v0.10.33-linux-x64.tar.gz http://nodejs.org/dist/v0.10.33/node-v0.10.33-linux-x64.tar.gz
+RUN tar -zxf ~/node-v0.10.33-linux-x64.tar.gz
+RUN rm ~/node-v0.10.33-linux-x64.tar.gz
+RUN echo 'export PATH=$PATH:~/node-v0.10.33-linux-x64/bin' >> ~/.bashrc
+RUN source ~/.bashrc
+RUN git clone https://github.com/c9/core.git c9sdk
+RUN c9sdk/scripts/install-sdk.sh
+
+
+
