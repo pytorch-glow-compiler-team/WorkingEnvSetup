@@ -8,20 +8,53 @@ RUN mkdir -p $WORKDIR
 WORKDIR $WORKDIR
 
 # Update and install tools
-RUN apt-get update && \
-    apt-get install -y clang clang-8 cmake graphviz libpng-dev \
+ARG ccache_deps="asciidoc docbook-xml docbook-xsl xsltproc"
+ARG numpy_deps="gfortran"
+RUN apt-get update && yes|apt-get upgrade && \
+    apt-get install -y --no-install-recommends \
+        clang clang-8 cmake graphviz libpng-dev \
         libprotobuf-dev llvm-8 llvm-8-dev ninja-build protobuf-compiler wget \
         opencl-headers libgoogle-glog-dev libboost-all-dev \
         libdouble-conversion-dev libevent-dev libssl-dev libgflags-dev \
         libjemalloc-dev libpthread-stubs0-dev \
         # Additional dependencies
-        git python-numpy && \
+        git python-numpy \
         # pytorch need libraries
-        build-essential curl ca-certificates libjpeg-dev libpng-dev && \
+        build-essential curl ca-certificates libjpeg-dev libpng-dev \
+        $ccache_deps \
+        $numpy_deps \
+        apt-transport-https \
+        autoconf \
+        automake \
+        libatlas-base-dev \
+        libc6-dbg \
+        libiomp-dev \
+        libyaml-dev \
+        libz-dev \
+        libjpeg-dev \
+        libasound2-dev \
+        libsndfile-dev \
+        python-dev \
+        python-setuptools \
+        python-wheel \
+        software-properties-common \
+        sudo vim tmux bzip2 && \
     # Delete outdated llvm to avoid conflicts
     apt-get autoremove -y llvm-6.0 && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
+
+# Install Valgrind separately since the apt-get version is too old.
+ARG VALGRIND_VERSION=3.15.0
+RUN mkdir valgrind_build && cd valgrind_build
+#RUN wget http://valgrind.org/downloads/valgrind-${VALGRIND_VERSION}.tar.bz2
+RUN wget https://sourceware.org/ftp/valgrind/valgrind-${VALGRIND_VERSION}.tar.bz2
+RUN tar -xjf valgrind-${VALGRIND_VERSION}.tar.bz2 && \
+    cd valgrind-${VALGRIND_VERSION} && \
+    ./configure --prefix=/usr/local && \
+    make -j 4 && sudo make install && cd ../../ && \
+    rm -rf valgrind_build && alias valgrind="/usr/local/bin/valgrind"
+
 
 # Point clang to llvm-8 version
 RUN update-alternatives --install /usr/bin/clang clang \
@@ -49,18 +82,12 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
      chmod +x ~/miniconda.sh && \
      ~/miniconda.sh -b -p /opt/conda && \
      rm ~/miniconda.sh && \
-     /opt/conda/bin/conda install -y python=$PYTHON_VERSION numpy pyyaml scipy ipython mkl mkl-include ninja cython typing && \
-     /opt/conda/bin/conda clean -ya
+     /opt/conda/bin/conda config --append channels conda-forge
+     #&& /opt/conda/bin/conda install -y python=$PYTHON_VERSION ipython mkl mkl-include \ 
+     #numpy pyyaml scipy ninja cython typing && \
+     #/opt/conda/bin/conda clean -ya
 ENV PATH /opt/conda/bin:$PATH
 
-# Install cloud9
-RUN wget -O  ~/node-v0.10.33-linux-x64.tar.gz http://nodejs.org/dist/v0.10.33/node-v0.10.33-linux-x64.tar.gz
-RUN tar -zxf ~/node-v0.10.33-linux-x64.tar.gz
-RUN rm ~/node-v0.10.33-linux-x64.tar.gz
-RUN echo 'export PATH=$PATH:~/node-v0.10.33-linux-x64/bin' >> ~/.bashrc
-RUN source ~/.bashrc
-RUN git clone https://github.com/c9/core.git c9sdk
-RUN c9sdk/scripts/install-sdk.sh
 
-
-
+WORKDIR /workspace
+RUN chmod -R a+w .

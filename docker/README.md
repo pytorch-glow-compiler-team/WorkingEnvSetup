@@ -1,11 +1,19 @@
-# Glow Docker image
-This is a wrapper containing all of the dependencies needed to build glow.
+# Docker image
+This is a wrapper containing all of the dependencies needed to build glow, pytorch and opencv c++ enviroment
 
 ## Building container
 To build the container, `cd` into the directory containing the Dockerfile and run:
 ```bash
-docker build -t pytorch/glow .
+docker build -t <docker name> .
 ```
+User can run the docker/build.sh directly
+
+## Dockerfile config
+
+User can search pytorch, glow or opencv for docker file template
+For example, 
+* cpu of pytorch see https://github.com/pytorch/pytorch/blob/9ba2530d426ada36ae4f874689acce40f6ba2b80/.circleci/docker/ubuntu/Dockerfile
+
 
 ## Running container
 1. Clone glow repository to some `/my/path/glow`
