@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 
 ARG WORKDIR=/root/dev
-ARG PYTHON_VERSION=3.8
+ARG PYTHON_VERSION=3.7
 
 # Create working folder
 RUN mkdir -p $WORKDIR
@@ -82,10 +82,10 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
      chmod +x ~/miniconda.sh && \
      ~/miniconda.sh -b -p /opt/conda && \
      rm ~/miniconda.sh && \
-     /opt/conda/bin/conda config --append channels conda-forge
-     #&& /opt/conda/bin/conda install -y python=$PYTHON_VERSION ipython mkl mkl-include \ 
-     #numpy pyyaml scipy ninja cython typing && \
-     #/opt/conda/bin/conda clean -ya
+     /opt/conda/bin/conda config --append channels conda-forge && \
+     /opt/conda/bin/conda install -y ipython mkl mkl-include numpy pyyaml scipy ninja cython typing \
+     pandas matplotlib  &&\
+     /opt/conda/bin/conda clean -ya
 ENV PATH /opt/conda/bin:$PATH
 
 

@@ -8,12 +8,13 @@ step by step flow:
 get docker image from https://hub.docker.com/r/pytorch/pytorch
 docker pull pytorch/pytorch
 
-you can use command docker image ls to see all those images in your system
+or create docker image from ./docker folder.
+ 
+### Step 2 setup git repo
 
-Run docker image, please provide your personal folder as workdir
-docker run --restart=always --privileged=true -v ~/Documents/Working:/workspace -d pytorch/pytorch sleep infinity & wait
+clone git folder. here we use pytorh as example.
+Then link to offical pytorch git repo as upstream
+```git remote add upstream https://github.com/pytorch/pytorch.git```
 
-start virtual linux env bash
-use docker container ls to find the container id
 
-run bash: docker exec -it 9b2c73057ff0 /bin/bash
+
