@@ -38,7 +38,7 @@ RUN apt-get update && yes|apt-get upgrade && \
         python-setuptools \
         python-wheel \
         software-properties-common \
-        sudo vim tmux bzip2 && \
+        sudo vim tmux bzip2 doxygen && \
     # Delete outdated llvm to avoid conflicts
     apt-get autoremove -y llvm-6.0 && \
     apt-get clean && \
