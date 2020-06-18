@@ -12,7 +12,7 @@ ARG ccache_deps="asciidoc docbook-xml docbook-xsl xsltproc"
 ARG numpy_deps="gfortran"
 RUN apt-get update && yes|apt-get upgrade && \
     apt-get install -y --no-install-recommends \
-        clang clang-8 cmake graphviz libpng-dev \
+        clang clang-8 graphviz libpng-dev \
         libprotobuf-dev llvm-8 llvm-8-dev ninja-build protobuf-compiler wget \
         opencl-headers libgoogle-glog-dev libboost-all-dev \
         libdouble-conversion-dev libevent-dev libssl-dev libgflags-dev \
@@ -38,7 +38,7 @@ RUN apt-get update && yes|apt-get upgrade && \
         python-setuptools \
         python-wheel \
         software-properties-common \
-        sudo vim tmux bzip2 doxygen && \
+        sudo vim tmux bzip2 doxygen less && \
     # Delete outdated llvm to avoid conflicts
     apt-get autoremove -y llvm-6.0 && \
     apt-get clean && \
@@ -54,6 +54,17 @@ RUN tar -xjf valgrind-${VALGRIND_VERSION}.tar.bz2 && \
     ./configure --prefix=/usr/local && \
     make -j 4 && sudo make install && cd ../../ && \
     rm -rf valgrind_build && alias valgrind="/usr/local/bin/valgrind"
+RUN cd ..
+
+# Install latest cmake 
+RUN apt remove -y --purge cmake
+RUN mkdir cmake_build && cd cmake_build
+RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.5/cmake-3.16.5.tar.gz && \
+    tar -zxvf cmake-3.16.5.tar.gz && \
+    cd cmake-3.16.5 && \
+    ./bootstrap && \
+    make && make install 
+
 
 
 # Point clang to llvm-8 version
