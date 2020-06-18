@@ -13,6 +13,10 @@ search pytorch, glow or opencv for docker file template
 For example, 
 * cpu of pytorch see https://github.com/pytorch/pytorch/blob/9ba2530d426ada36ae4f874689acce40f6ba2b80/.circleci/docker/ubuntu/Dockerfile
 
+if you want to use GPU on docker, please install gpu toolkit. see link here 
+https://github.com/NVIDIA/nvidia-docker
+
+
 
 ## Running container
 

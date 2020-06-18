@@ -38,7 +38,7 @@ RUN apt-get update && yes|apt-get upgrade && \
         python-setuptools \
         python-wheel \
         software-properties-common \
-        sudo vim tmux bzip2 doxygen less && \
+        sudo vim tmux bzip2 doxygen less  clang-format npm unzip && \
     # Delete outdated llvm to avoid conflicts
     apt-get autoremove -y llvm-6.0 && \
     apt-get clean && \
@@ -65,6 +65,8 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.16.5/cmake-3.16.5
     ./bootstrap && \
     make && make install 
 
+# intall bazel and bazelisk for tensorflow build
+RUN npm install -g @bazel/bazelisk
 
 
 # Point clang to llvm-8 version
@@ -73,9 +75,8 @@ RUN update-alternatives --install /usr/bin/clang clang \
     update-alternatives --install /usr/bin/clang++ clang++ \
         /usr/lib/llvm-8/bin/clang++ 50
 
-# Point default C/C++ compiler to clang
-RUN update-alternatives --set cc /usr/bin/clang && \
-    update-alternatives --set c++ /usr/bin/clang++
+# Point default C/C++ compiler to clang if possible
+RUN update-alternatives --set cc /usr/bin/clang &&  update-alternatives --set c++ /usr/bin/clang++
 
 # Install fmt
 RUN git clone https://github.com/fmtlib/fmt && \
@@ -97,6 +98,7 @@ RUN curl -o ~/miniconda.sh https://repo.anaconda.com/miniconda/Miniconda3-latest
      /opt/conda/bin/conda install -y ipython mkl mkl-include numpy pyyaml scipy ninja cython typing \
      pandas matplotlib  &&\
      /opt/conda/bin/conda clean -ya
+RUN  /opt/conda/bin/conda install -y keras-preprocessing
 ENV PATH /opt/conda/bin:$PATH
 
 
