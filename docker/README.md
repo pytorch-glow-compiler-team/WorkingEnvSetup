@@ -41,3 +41,8 @@ If you want an additional shell to access the container, run `docker ps` to find
 Note that this will mount the local  folder into the docker container. Edits made in the container are persistent (since they are effectively made on the host). Similarly, you can edit the files on the host (in your favourite text editor) and have them immediately reflected in the container.
 
 
+# Other setup
+
+default cc and c++ compiler is clang now. User can switch to gcc if need
+>>> update-alternatives --set cc 
+>>> update-alternatives --set c++ 
