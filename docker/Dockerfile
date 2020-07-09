@@ -38,7 +38,9 @@ RUN apt-get update && yes|apt-get upgrade && \
         python-setuptools \
         python-wheel \
         software-properties-common \
-        sudo vim tmux bzip2 doxygen less  clang-format npm unzip && \
+        sudo vim tmux bzip2 doxygen less  clang-format npm unzip \
+        libgtk2.0-dev  pkg-config libavcodec-dev libavformat-dev libswscale-dev \
+        libjpeg-dev libpng-dev libtiff-dev  &&\
     # Delete outdated llvm to avoid conflicts
     apt-get autoremove -y llvm-6.0 && \
     apt-get clean && \
