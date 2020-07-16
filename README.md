@@ -14,7 +14,10 @@ or create docker image from ./docker folder.
 
 clone git folder. here we use pytorh as example.
 Then link to offical pytorch git repo as upstream
-```git remote add upstream https://github.com/pytorch/pytorch.git```
+```
+git remote add upstream https://github.com/pytorch/pytorch.git
+```
 
+### Step3 test
 
 
