@@ -18,6 +18,4 @@ Then link to offical pytorch git repo as upstream
 git remote add upstream https://github.com/pytorch/pytorch.git
 ```
 
-### Step3 test
-
 
