@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -t pytorch_opencv_glow  .
+docker build -t tool_dev .
